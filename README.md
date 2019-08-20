@@ -24,6 +24,7 @@ My first *mostly* by myself game attempt!
 - [ ] Multiple resolution support
 - [ ] Make difficulty scale over time
 - [ ] High Score System
+- [ ] If the Stamina system remains put a UI Element in place.
 
 ### 1.1 - Scope Creep
 - [ ] Port it to Windows

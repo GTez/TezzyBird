@@ -68,7 +68,9 @@ void Bird::setPosition(sf::Vector2f position) {
 	m_sprite.setPosition(position);
 }
 
-void Bird::reset() {
+void Bird::reset(sf::Vector2f position) {
+	m_position = position;
+	m_sprite.setPosition(m_position);
 	m_stamina = m_maxStamina;
 	m_velocity = m_mass;
 }

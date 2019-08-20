@@ -4,7 +4,7 @@
 #include "Pipe.h"
 
 // Tuneables
-sf::Vector2f BIRD_SPAWN_POS = sf::Vector2f(50.0f, 256.0f);
+const sf::Vector2f kBirdSpawnPosition = sf::Vector2f(50.0f, 256.0f);
 const float kGravity = 15.0f;
 const float kBirdMass = 70.0f;
 const float kFlapPower = 300.0f;
@@ -67,7 +67,7 @@ void init() {
 	backgroundTexture.loadFromFile(kBackgroundImagePath);
 	backgroundTexture.setRepeated(true);
 	backgroundSprite.setTexture(backgroundTexture);
-	bird.init(kStaticBirdImagePath, BIRD_SPAWN_POS, kBirdMass, kGravity, kStamina, kRegenRate);
+	bird.init(kStaticBirdImagePath, kBirdSpawnPosition, kBirdMass, kGravity, kStamina, kRegenRate);
 }
 
 void draw() {
@@ -144,12 +144,11 @@ bool checkCollision(sf::Sprite objOne, sf::Sprite objTwo) {
 }
 
 void resetGame() {
-	bird.setPosition(BIRD_SPAWN_POS);
-	bird.reset();
-	for ( Pipe *pipe : pipes ) {
+	bird.reset(kBirdSpawnPosition);
+	for ( Pipe *pipe : pipes ) { // First delete the pipes
 		delete(pipe);
 	}
-	pipes.clear();
+	pipes.clear();  // Then clear the Vector
 	secSinceLastSpawn = 0.0f;
 	spawnPipe();
 }
