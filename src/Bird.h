@@ -12,6 +12,8 @@ class Bird{
 		float getVelocity();
 		float getStamina();
 		sf::Vector2f getPosition();
+		void setPosition(sf::Vector2f position);
+		void reset();
 
 	private:
 		sf::Texture m_texture;

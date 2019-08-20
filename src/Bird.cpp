@@ -36,7 +36,11 @@ void Bird::update(float dt) {
 	if (m_position.y < 5) {
 		m_position.y = 5;
 		m_velocity = -10.0;
+	} else if (m_position.y > 500) {
+		m_position.y = 500;
+		m_velocity = 0;
 	}
+
 	if (m_stamina < m_maxStamina) {
 		m_stamina += m_regenRate * dt;
 	}
@@ -58,4 +62,13 @@ float Bird::getStamina() {
 
 sf::Vector2f Bird::getPosition() {
 	return m_position;
+}
+
+void Bird::setPosition(sf::Vector2f position) {
+	m_sprite.setPosition(position);
+}
+
+void Bird::reset() {
+	m_stamina = m_maxStamina;
+	m_velocity = m_mass;
 }
