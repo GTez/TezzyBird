@@ -31,3 +31,4 @@ My first *mostly* by myself game attempt!
 - [ ] Animated Background
 - [ ] Animated Start/Game Over Screen
 - [ ] port it to switch ... lol
+- [ ] Rhythm Mechanic

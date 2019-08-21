@@ -12,6 +12,7 @@ const float kStamina = 1000.0f;
 const float kRegenRate = 1500.0f;
 const float kScrollRate = 75.0f;
 const float kSpawnRate = 2.5f;
+const float kPipeOpening = 150.0f;
 const char* kBackgroundImagePath = "content/textures/background-day.png";
 const char* kPipeImagePath = "content/textures/pipe-green.png";
 const char* kStaticBirdImagePath = "content/textures/redbird-midflap.png";
@@ -64,6 +65,7 @@ int main()
 
 void init() {
 	// Function to setup all the objects
+	srand((int)time(0));
 	backgroundTexture.loadFromFile(kBackgroundImagePath);
 	backgroundTexture.setRepeated(true);
 	backgroundSprite.setTexture(backgroundTexture);
@@ -75,6 +77,7 @@ void draw() {
 	window.draw(backgroundSprite);
 	for (Pipe *pipe : pipes) {
 		window.draw(pipe->getSprite());
+		window.draw(pipe->getTopSprite());
 	}
 	window.draw(bird.getSprite());
 
@@ -113,7 +116,7 @@ void update(float dt) {
 		for ( unsigned int i = 0; i < pipes.size(); i++ ) {
 			Pipe* pipe = pipes[i];
 			pipe->update(dt, kScrollRate);
-			if ( checkCollision(bird.getSprite(), pipe->getSprite())) {
+			if ( checkCollision(bird.getSprite(), pipe->getSprite()) || checkCollision(bird.getSprite(), pipe->getTopSprite()) ) {
 				printf("Game Over Man!");
 				gameover = true;
 			}
@@ -128,9 +131,12 @@ void update(float dt) {
 
 void spawnPipe() {
 	// printf("Spawning a Pipe \n");
-	sf::Vector2f pipeSpawnPos = sf::Vector2f(window.getSize().x + 25, 400.0f);
+	// 550.0f bottom 360.0f top
+	float offset = rand() % 190 + 360;
+	// printf("Spawning Pipe with offset: %F", offset);
+	sf::Vector2f pipeSpawnPos = sf::Vector2f(window.getSize().x + 25, offset);
 	Pipe* pipe = new Pipe();
-	pipe->init(kPipeImagePath, pipeSpawnPos);
+	pipe->init(kPipeImagePath, pipeSpawnPos, -1.0f * ( kPipeOpening + 320.0f ));
 	pipes.push_back(pipe);
 }
 
