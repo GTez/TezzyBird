@@ -7,13 +7,14 @@ My first *mostly* by myself game attempt!
 - [x] Make Pipes Class
   - [x] Make a collision System
   - [x] Make the pipes move
-  - [ ] Make the pipes spawn randomly on the virtical plane
+  - [x] Make the pipes spawn randomly on the virtical plane
 - [ ] Get Sound Going
 - [ ] Animate the Bird
 - [ ] Score System
   - [ ] Number Generator
-- [ ] Title Screen
-- [ ]Game Over Screen
+- [x] Game State Manager
+- [x] Title Screen
+- [x] Game Over Screen
 - [ ] Animated Ground Plane
   - [ ] Ground Collision
 
@@ -32,3 +33,4 @@ My first *mostly* by myself game attempt!
 - [ ] Animated Start/Game Over Screen
 - [ ] port it to switch ... lol
 - [ ] Rhythm Mechanic
+- [ ] Late game difficulty has pipes that move off cycle.

@@ -16,27 +16,35 @@ const float kPipeOpening = 150.0f;
 const char* kBackgroundImagePath = "content/textures/background-day.png";
 const char* kPipeImagePath = "content/textures/pipe-green.png";
 const char* kStaticBirdImagePath = "content/textures/redbird-midflap.png";
+const char* kGameOvertextImagePath = "content/textures/gameover.png";
+const char* kMessageOverlayImagePath = "content/textures/message.png";
+const char* kGroundImagePath = "content/textures/base.png";
 
 // Fiunction Prototypes
 void init();
 void draw();
 void inputHandler();
-void update(float dt);
+void mainLoopUpdate(float dt);
 void spawnPipe();
 bool checkCollision(sf::Sprite objOne, sf::Sprite objTwo);
 void resetGame();
+void movePipe(float dt, float distance);
 
 // Global Object Declerations
 sf::RenderWindow window(sf::VideoMode(288, 512), "Tezzy Bird!");
 sf::Texture backgroundTexture;
 sf::Sprite backgroundSprite;
+sf::Texture gameOverTexture;
+sf::Sprite gameOverSprite;
+sf::Texture messageOverlayTexture;
+sf::Sprite messageOverlaySprite;
+sf::Texture groundTexture;
+sf::Sprite groundSprite;
 std::vector<Pipe*> pipes;
 Bird bird;
-bool gameover = true;
+enum GameState { starting, paused, playing, gameover };
+GameState gameState;
 float secSinceLastSpawn = 0.0f;
-
-// Debug stuff
-int counter = 0;
 
 int main()
 {
@@ -47,13 +55,12 @@ int main()
 		__windowsHelper.setIcon(window.getSystemHandle());
 	#endif
 	spawnPipe();
-
 	while (window.isOpen())
 	{
 		sf::Time dt = clock.restart();
 		inputHandler();
-		if (!gameover) {
-			update(dt.asSeconds());
+		if (gameState == playing) {
+			mainLoopUpdate(dt.asSeconds());
 		}
 		window.clear();
 		draw();
@@ -66,9 +73,23 @@ int main()
 void init() {
 	// Function to setup all the objects
 	srand((int)time(0));
+	gameState = starting;
 	backgroundTexture.loadFromFile(kBackgroundImagePath);
 	backgroundTexture.setRepeated(true);
 	backgroundSprite.setTexture(backgroundTexture);
+	groundTexture.loadFromFile(kGroundImagePath);
+	groundTexture.isRepeated();
+	groundSprite.setTexture(groundTexture);
+	groundSprite.setOrigin(groundTexture.getSize().x / 2, groundTexture.getSize().y / 2);
+	groundSprite.setPosition(sf::Vector2f(144.0f, 460.0f));
+	gameOverTexture.loadFromFile(kGameOvertextImagePath);
+	gameOverSprite.setTexture(gameOverTexture);
+	gameOverSprite.setOrigin(gameOverTexture.getSize().x / 2, gameOverTexture.getSize().y / 2 );
+	gameOverSprite.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().x / 3));
+	messageOverlayTexture.loadFromFile(kMessageOverlayImagePath);
+	messageOverlaySprite.setTexture(messageOverlayTexture);
+	messageOverlaySprite.setOrigin(messageOverlayTexture.getSize().x / 2, messageOverlayTexture.getSize().y / 2);
+	messageOverlaySprite.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().x / 2));
 	bird.init(kStaticBirdImagePath, kBirdSpawnPosition, kBirdMass, kGravity, kStamina, kRegenRate);
 }
 
@@ -79,29 +100,35 @@ void draw() {
 		window.draw(pipe->getSprite());
 		window.draw(pipe->getTopSprite());
 	}
-	window.draw(bird.getSprite());
-
+	window.draw(groundSprite);
+	if (gameState == gameover) {
+		window.draw(gameOverSprite);
+	}
+	if (gameState == starting) {
+		window.draw(messageOverlaySprite);
+	} else {
+		window.draw(bird.getSprite());
+	}
 }
 
 void inputHandler() {
 	sf::Event m_event;
 		while (window.pollEvent(m_event)) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-				if (gameover) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				if (gameState == gameover || gameState == starting) {
 					resetGame();
-					gameover = false;
+					gameState = playing;
 				} else {
 					bird.flap(kFlapPower);
 				}
 			}
-			if (m_event.type == sf::Event::Closed)
+			if (m_event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 				window.close();
+			}
 		}
 }
 
-void update(float dt) {
-	// Move the bird
-	counter++;
+void mainLoopUpdate(float dt) {
 	// Move the bird
 	bird.update(dt);
 
@@ -117,8 +144,8 @@ void update(float dt) {
 			Pipe* pipe = pipes[i];
 			pipe->update(dt, kScrollRate);
 			if ( checkCollision(bird.getSprite(), pipe->getSprite()) || checkCollision(bird.getSprite(), pipe->getTopSprite()) ) {
-				printf("Game Over Man!");
-				gameover = true;
+				printf("Game Over Man! \n");
+				gameState = gameover;
 			}
 			if (pipe->getPosition().x < (-1.0f * pipe->getSprite().getTextureRect().width)) {
 				pipes.erase(pipes.begin() + i);
@@ -127,6 +154,7 @@ void update(float dt) {
 			}
 		}
 	}
+	movePipe(dt, kScrollRate);
 }
 
 void spawnPipe() {
@@ -157,4 +185,10 @@ void resetGame() {
 	pipes.clear();  // Then clear the Vector
 	secSinceLastSpawn = 0.0f;
 	spawnPipe();
+}
+
+void movePipe(float dt, float distance) {
+	// This doesn't work right yet. Don't judge me. :)
+	float m_spriteMove = -1 * dt * distance;
+	groundSprite.move(m_spriteMove, 0);
 }
