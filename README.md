@@ -2,6 +2,12 @@
 
 My first *mostly* by myself game attempt!
 
+Style stuff
+* move curly braces to their own line
+* CapitalCapital function names
+* go through main.hpp move everything to m_
+
+
 ## *Task List:*
 ### 0.1 - Enough to feel proud
 - [x] Make Pipes Class

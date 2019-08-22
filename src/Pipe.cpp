@@ -1,9 +1,9 @@
-#include "Pipe.h"
+#include "Pipe.hpp"
 
 Pipe::Pipe(){}
 Pipe::~Pipe(){}
 
-void Pipe::init(std::string textureName, sf::Vector2f position, float spread){
+void Pipe::init(std::string textureName, sf::Vector2f position, float spread){ // Move this all to constructors a la birb
 	m_position = position;
 	m_positionTop = sf::Vector2f(position.x, position.y + spread);
 	//printf("%f", m_position.x);
