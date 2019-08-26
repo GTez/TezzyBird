@@ -5,18 +5,20 @@ class Game {
 	public:
 		Game();
 		~Game();
-		void init(sf::RenderWindow &_window);
-		void draw(sf::RenderWindow &window);
-		void inputHandler(sf::RenderWindow &window);
-		void mainLoopUpdate(float dt, sf::RenderWindow &window);
-		void spawnPipe(sf::RenderWindow &window);
+		void init();
+		void draw();
+		void inputHandler();
+		void mainLoopUpdate(float dt);
+		void spawnPipe();
 		bool checkCollision(sf::Sprite objOne, sf::Sprite objTwo);
-		void resetGame(sf::RenderWindow &window);
-		void movePipe(float dt, float distance);
+		void resetGame();
+		void MoveGround(float dt, float distance);
 		int GetGameState();
+		sf::RenderWindow* GetRenderWindow();
 
 	private:
 		Bird* m_bird;
+		sf::RenderWindow window;
 		sf::Texture backgroundTexture;
 		sf::Sprite backgroundSprite;
 		sf::Texture gameOverTexture;
@@ -24,7 +26,8 @@ class Game {
 		sf::Texture messageOverlayTexture;
 		sf::Sprite messageOverlaySprite;
 		sf::Texture groundTexture;
-		sf::Sprite groundSprite;
+		sf::Sprite groundSpriteOne;
+		sf::Sprite groundSpriteTwo;
 		std::vector<Pipe*> pipes;
 		float secSinceLastSpawn;
 		const char* kBackgroundImagePath = "content/textures/background-day.png";
@@ -34,7 +37,4 @@ class Game {
 		const char* kPipeImagePath = "content/textures/pipe-green.png";
 		const char* kStaticBirdImagePath = "content/textures/redbird-midflap.png";
 		int gamestate;
-
-
-
 };

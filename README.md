@@ -21,8 +21,8 @@ Style stuff
 - [x] Game State Manager
 - [x] Title Screen
 - [x] Game Over Screen
-- [ ] Animated Ground Plane
-  - [ ] Ground Collision
+- [x] Animated Ground Plane
+  - [x] Ground Collision
 
 ### 1.0 - Finished
 - [ ] Add support for multiple birds colours

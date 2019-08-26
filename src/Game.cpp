@@ -4,9 +4,10 @@
 #include "Globals.hpp"
 
 Game::Game() :  // Colon used for initializing the variable to a null pointer
-	m_bird(nullptr)
+	m_bird(nullptr),
+	window(sf::VideoMode(288, 512), "Tezzy Bird!")
 {
-	gamestate = 0;
+	gamestate = 0; // 0 starting 1 playing 2 gameover
 }
 
 Game::~Game()
@@ -17,7 +18,7 @@ Game::~Game()
 	}
 }
 
-void Game::init(sf::RenderWindow &window) {
+void Game::init() {
 	// Function to setup all the objects
 	srand((int)time(0));
 	secSinceLastSpawn = 0.0;
@@ -26,9 +27,12 @@ void Game::init(sf::RenderWindow &window) {
 	backgroundSprite.setTexture(backgroundTexture);
 	groundTexture.loadFromFile(kGroundImagePath);
 	groundTexture.isRepeated();
-	groundSprite.setTexture(groundTexture);
-	groundSprite.setOrigin(groundTexture.getSize().x / 2, groundTexture.getSize().y / 2);
-	groundSprite.setPosition(sf::Vector2f(144.0f, 460.0f));
+	groundSpriteOne.setTexture(groundTexture);
+	groundSpriteOne.setOrigin(groundTexture.getSize().x / 2, groundTexture.getSize().y / 2);
+	groundSpriteOne.setPosition(sf::Vector2f(144.0f, kGroundHeight));
+	groundSpriteTwo.setTexture(groundTexture);
+	groundSpriteTwo.setOrigin(groundTexture.getSize().x / 2, groundTexture.getSize().y / 2);
+	groundSpriteTwo.setPosition(sf::Vector2f(144.0f + groundTexture.getSize().x, kGroundHeight)); // Offset from the original
 	gameOverTexture.loadFromFile(kGameOvertextImagePath);
 	gameOverSprite.setTexture(gameOverTexture);
 	gameOverSprite.setOrigin(gameOverTexture.getSize().x / 2, gameOverTexture.getSize().y / 2 );
@@ -38,10 +42,9 @@ void Game::init(sf::RenderWindow &window) {
 	messageOverlaySprite.setOrigin(messageOverlayTexture.getSize().x / 2, messageOverlayTexture.getSize().y / 2);
 	messageOverlaySprite.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().x / 2));
 	m_bird = new Bird(kStaticBirdImagePath, sf::Vector2f(kBirdSpawnX, kBirdSpawnY), kBirdMass, kGravity, kStamina, kRegenRate);
-
 }
 
-void Game::draw(sf::RenderWindow &window) {
+void Game::draw() {
 	// Function to handle the drawing of a frame
 	window.draw(backgroundSprite);
 	for (Pipe *pipe : pipes) {
@@ -51,7 +54,8 @@ void Game::draw(sf::RenderWindow &window) {
 		}
 
 	}
-	window.draw(groundSprite);
+	window.draw(groundSpriteOne);
+	window.draw(groundSpriteTwo);
 	if (gamestate == 2) {
 		window.draw(gameOverSprite);
 	}
@@ -62,12 +66,12 @@ void Game::draw(sf::RenderWindow &window) {
 	}
 }
 
-void Game::inputHandler(sf::RenderWindow &window) {
+void Game::inputHandler() {
 	sf::Event m_event;
 		while (window.pollEvent(m_event)) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				if (gamestate == 2 || gamestate == 0) {
-					resetGame(window);
+					resetGame();
  					gamestate = 1;
 				} else {
 					m_bird->flap(kFlapPower);
@@ -79,14 +83,14 @@ void Game::inputHandler(sf::RenderWindow &window) {
 		}
 }
 
-void Game::mainLoopUpdate(float dt, sf::RenderWindow &window) {
+void Game::mainLoopUpdate(float dt) {
 	// Move the m_bird
 	m_bird->update(dt);
 
 	// Handle Spawning
 	secSinceLastSpawn += dt;
 	if (secSinceLastSpawn >= kSpawnRate) {
-		spawnPipe(window);
+		spawnPipe();
 		secSinceLastSpawn = 0.0f;
 	}
 	// Handle Collision and Out of bounds stuff
@@ -94,7 +98,10 @@ void Game::mainLoopUpdate(float dt, sf::RenderWindow &window) {
 		for ( unsigned int i = 0; i < pipes.size(); i++ ) {
 			Pipe* pipe = pipes[i];
 			pipe->update(dt, kScrollRate);
-			if ( checkCollision(m_bird->getSprite(), pipe->getSprite()) || checkCollision(m_bird->getSprite(), pipe->getTopSprite()) ) {
+			if ( checkCollision(m_bird->getSprite(), pipe->getSprite()) ||
+				checkCollision(m_bird->getSprite(), pipe->getTopSprite()) ||
+				checkCollision(m_bird->getSprite(), groundSpriteOne) ||
+			 	checkCollision(m_bird->getSprite(), groundSpriteTwo)) {
 				printf("Game Over Man! \n");
 				gamestate = 2;
 			}
@@ -105,10 +112,10 @@ void Game::mainLoopUpdate(float dt, sf::RenderWindow &window) {
 			}
 		}
 	}
-	movePipe(dt, kScrollRate);
+	MoveGround(dt, kScrollRate);
 }
 
-void Game::spawnPipe(sf::RenderWindow &window) {
+void Game::spawnPipe() {
 	// printf("Spawning a Pipe \n");
 	// 550.0f bottom 360.0f top
 	float offset = rand() % 190 + 360;
@@ -128,7 +135,7 @@ bool Game::checkCollision(sf::Sprite objOne, sf::Sprite objTwo) {
 	return false;
 }
 
-void Game::resetGame(sf::RenderWindow &window) {
+void Game::resetGame() {
 	if (m_bird != nullptr) {
 		m_bird->reset(sf::Vector2f(kBirdSpawnX, kBirdSpawnY));
 	}
@@ -137,16 +144,35 @@ void Game::resetGame(sf::RenderWindow &window) {
 	}
 	pipes.clear();  // Then clear the Vector
 	secSinceLastSpawn = 0.0f;
-	spawnPipe(window);
+	spawnPipe();
+	groundSpriteOne.setPosition(sf::Vector2f(144.0f, kGroundHeight));
+	groundSpriteTwo.setPosition(sf::Vector2f(144.0f + groundTexture.getSize().x, kGroundHeight)); // Offset from the original
+
 }
 
-void Game::movePipe(float dt, float distance) {
-	// This doesn't work right yet. Don't judge me. :)
-	float m_spriteMove = -1 * dt * distance;
-	groundSprite.move(m_spriteMove, 0);
+void Game::MoveGround(float dt, float distance)
+{
+	float _x_transform = -1 * dt * distance;
+	sf::Vector2f _translate = sf::Vector2f(_x_transform, 0);
+	if (groundSpriteOne.getGlobalBounds().left < 0 - groundSpriteOne.getLocalBounds().width) {
+		groundSpriteOne.setPosition(sf::Vector2f(groundSpriteTwo.getGlobalBounds().left + groundSpriteTwo.getGlobalBounds().width + 144.0f, kGroundHeight));
+	} else {
+		groundSpriteOne.move(_translate);
+	}
+
+	if (groundSpriteTwo.getGlobalBounds().left < 0 - groundSpriteTwo.getLocalBounds().width) {
+		groundSpriteTwo.setPosition(sf::Vector2f(groundSpriteOne.getGlobalBounds().left + groundSpriteOne.getGlobalBounds().width + 144.0f, kGroundHeight));
+	} else {
+		groundSpriteTwo.move(_translate);
+	}
+	printf("Groud Plane X Loc: %f \n", groundSpriteOne.getPosition().x);
 }
 
 int Game::GetGameState()
 {
 	return gamestate;
+}
+
+sf::RenderWindow* Game::GetRenderWindow() {
+	return &window;
 }
