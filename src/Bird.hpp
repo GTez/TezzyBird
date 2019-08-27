@@ -16,7 +16,6 @@ class Bird{
 		void reset(sf::Vector2f position);
 
 	private:
-
 		const float m_mass;
 		float m_velocity;
 		const float m_gravity;
@@ -26,4 +25,6 @@ class Bird{
 		sf::Vector2f m_position;
 		sf::Texture m_texture;
 		sf::Sprite m_sprite;
+		sf::SoundBuffer m_flapping_sound_buffer;
+		sf::Sound m_flapping_sound;
 };

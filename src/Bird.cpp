@@ -12,7 +12,9 @@
 		m_texture.loadFromFile(textureName.c_str());
 		m_sprite.setTexture(m_texture);
 		m_sprite.setOrigin(m_texture.getSize().x / 2, m_texture.getSize().y /2);
-		m_sprite.setPosition(m_position);
+		m_sprite.setPosition(m_position),
+		m_flapping_sound_buffer.loadFromFile("content/audio/wing.ogg");
+		m_flapping_sound.setBuffer(m_flapping_sound_buffer);
 	}
  Bird::~Bird(){}
 
@@ -50,6 +52,9 @@ void Bird::flap(float jumpPower)
 	if (m_jumpPower < m_stamina)
 	{
 		m_stamina = m_stamina - m_jumpPower;
+		if (m_flapping_sound.getStatus() != m_flapping_sound.Playing) {
+			m_flapping_sound.play();
+		}
 	}
 	else
 	{

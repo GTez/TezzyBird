@@ -12,7 +12,6 @@ int main()
 	m_game = new Game();
 	if (m_game != nullptr)
 	{
-		m_game->init();
 		#ifdef SFML_SYSTEM_WINDOWS
 			__windowsHelper.setIcon(window.getSystemHandle());
 		#endif

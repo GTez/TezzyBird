@@ -14,7 +14,7 @@ Style stuff
   - [x] Make a collision System
   - [x] Make the pipes move
   - [x] Make the pipes spawn randomly on the virtical plane
-- [ ] Get Sound Going
+- [x] Get Sound Going
 - [ ] Animate the Bird
 - [ ] Score System
   - [ ] Number Generator
@@ -32,6 +32,7 @@ Style stuff
 - [ ] Make difficulty scale over time
 - [ ] High Score System
 - [ ] If the Stamina system remains put a UI Element in place.
+- [ ] Fix bullshit bird hitbox
 
 ### 1.1 - Scope Creep
 - [ ] Port it to Windows

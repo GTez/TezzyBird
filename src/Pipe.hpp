@@ -3,13 +3,14 @@
 class Pipe
 {
 	public:
-		Pipe();
+		Pipe(std::string textureName, sf::Vector2f position, float spread);
 		~Pipe();
-		void init(std::string textureName, sf::Vector2f position, float spread);
 		void update(float dt, float distance);
 		sf::Sprite getSprite();
 		sf::Sprite getTopSprite();
 		sf::Vector2f getPosition();
+		bool GetPassed();
+		void SetPassed(bool _passed);
 
 	private:
 		sf::Texture m_texture;
@@ -17,5 +18,5 @@ class Pipe
 		sf::Sprite m_spriteTop;
 		sf::Vector2f m_position;
 		sf::Vector2f m_positionTop;
-
+		bool m_passed;
 };
