@@ -18,7 +18,8 @@ Style stuff
 - [ ] Animate the Bird
 - [ ] Clean up the bird collision
 - [ ] Score System
-  - [ ] Number Generator
+  - [x] Number Generator
+  - [ ] Reset back to Zero on Reset
 - [x] Game State Manager
 - [x] Title Screen
 - [x] Game Over Screen

@@ -2,7 +2,7 @@
 #include "Bird.hpp"
 #include "Pipe.hpp"
 #include "ScoreBoard.hpp"
-#include "Globals.inc"
+#include "Globals.hpp"
 
 Game::Game() :  // Colon used for initializing the variable to a null pointer
 	m_bird(nullptr),
@@ -34,6 +34,9 @@ Game::Game() :  // Colon used for initializing the variable to a null pointer
 	birdSplatSound.setBuffer(birdSplatSoundBuffer);
 	m_bird = new Bird(kStaticBirdImagePath, sf::Vector2f(kBirdSpawnX, kBirdSpawnY), kBirdMass, kGravity, kStamina, kRegenRate);
 	m_scoreboard = new ScoreBoard();
+	m_scoreboard->sprite0.setPosition(sf::Vector2f(window.getSize().x / 2 + m_scoreboard->sprite0.getLocalBounds().width, kScoreVerticalOffset));
+	m_scoreboard->sprite10.setPosition(sf::Vector2f(window.getSize().x / 2, kScoreVerticalOffset));
+	m_scoreboard->sprite100.setPosition(sf::Vector2f(window.getSize().x / 2 - m_scoreboard->sprite100.getLocalBounds().width, kScoreVerticalOffset));
 	gamestate = starting; // 0 starting 1 playing 2 gameover
 	score = 0;
 }
@@ -61,13 +64,17 @@ void Game::draw() {
 	}
 	window.draw(groundSpriteOne);
 	window.draw(groundSpriteTwo);
-	if (gamestate == 2) {
+	if (gamestate == gameover) {
 		window.draw(gameOverSprite);
 	}
-	if (gamestate == 0) {
+	if (gamestate == starting) {
 		window.draw(messageOverlaySprite);
 	} else {
 		window.draw(m_bird->getSprite());
+		window.draw(m_scoreboard->sprite0);
+		window.draw(m_scoreboard->sprite10);
+		window.draw(m_scoreboard->sprite100);
+
 	}
 }
 
@@ -105,7 +112,7 @@ void Game::mainLoopUpdate(float dt) {
 			// Update the score
 			if (pipe->getPosition().x < _bird_x_pos && pipe->GetPassed() == false) {
 				pipe->SetPassed(true);
-				score += 5;
+				score += 17;
 				m_scoreboard->SetScore(score);
 				// printf("The Game Score is: %i \n", score);
 			}
@@ -164,11 +171,11 @@ void Game::resetGame() {
 	// groundSpriteOne.setPosition(sf::Vector2f(144.0f, kGroundHeight));
 	// groundSpriteTwo.setPosition(sf::Vector2f(144.0f + groundTexture.getSize().x, kGroundHeight)); // Offset from the original
 	score = 0;
+	if (m_scoreboard != nullptr) m_scoreboard->SetScore(score);
 }
 
 void Game::MoveGround(float dt, float distance)
 {
-
 	float _x_transform = -1 * dt * distance;
 	sf::Vector2f _translate = sf::Vector2f(_x_transform, 0);
 	if (groundSpriteOne.getGlobalBounds().left < 0 - groundSpriteOne.getLocalBounds().width) {

@@ -10,4 +10,5 @@ static const float kPipeOpening = 150.0f;
 static const float kBirdSpawnX = 50.0f;
 static const float kBirdSpawnY = 256.0f;
 static const float kGroundHeight = 470.0f;
+static const int kScoreVerticalOffset = 40;
 

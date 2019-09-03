@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Globals.inc"
+#include "Globals.hpp"
 #include "Game.hpp"
 
 

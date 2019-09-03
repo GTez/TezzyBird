@@ -30,17 +30,33 @@ void ScoreBoard::SetScore(int _score) {
 	m_score = _score;
 	std::vector<int> _temp_array;
 	int n = _score;
-	while (n != 0) { // Get each of the places and put them in an array
-		_temp_array.push_back(n % 10);
-		n = n / 10;
+	if (n > 999) n = 999; // Digit protection
+	sprite0.setTexture(getNumberedTexture(n % 10));
+	if (n > 10) {
+		sprite10.setTexture(getNumberedTexture((n / 10) % 10));
+	} else {
+		sprite10.setTexture(getNumberedTexture(0));
 	}
-	// printf( "The array is %lu Long \n", _temp_array.size() );
-	while (!_temp_array.empty())
-	{
-		printf("%i \n", _temp_array.back());
-		_temp_array.pop_back();
+	if (n > 100) {
+		sprite100.setTexture(getNumberedTexture((n / 100) % 10));
+	} else {
+		sprite100.setTexture(getNumberedTexture(0));
 	}
-	printf("The Score is %i \n", _score);
+	// printf("%i", n / 100);
 }
 
-
+sf::Texture& ScoreBoard::getNumberedTexture(int _number)
+{
+	switch(_number) {
+		case 0 : return m_0_texture;
+		case 1 : return m_1_texture;
+		case 2 : return m_2_texture;
+		case 3 : return m_3_texture;
+		case 4 : return m_4_texture;
+		case 5 : return m_5_texture;
+		case 6 : return m_6_texture;
+		case 7 : return m_7_texture;
+		case 8 : return m_8_texture;
+		default : return m_9_texture;
+	};
+}

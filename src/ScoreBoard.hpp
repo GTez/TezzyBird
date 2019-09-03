@@ -22,6 +22,7 @@ class ScoreBoard{
 		sf::Texture m_7_texture;
 		sf::Texture m_8_texture;
 		sf::Texture m_9_texture;
+		sf::Texture& getNumberedTexture(int _number);
 };
 
 #endif // TEZZY_SCOREBOARD_HPP_
