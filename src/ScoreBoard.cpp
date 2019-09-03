@@ -3,36 +3,24 @@
 ScoreBoard::ScoreBoard() 	{
 	m_score = 0;
 	m_0_texture.loadFromFile("content/textures/0.png");
-	m_0_sprite.setTexture(m_0_texture);
-	m_0_sprite.setOrigin(sf::Vector2f(m_0_texture.getSize().x / 2, m_0_texture.getSize().y / 2));
 	m_1_texture.loadFromFile("content/textures/1.png");
-	m_1_sprite.setTexture(m_1_texture);
-	m_1_sprite.setOrigin(sf::Vector2f(m_1_texture.getSize().x / 2, m_1_texture.getSize().y / 2));
 	m_2_texture.loadFromFile("content/textures/2.png");
-	m_2_sprite.setTexture(m_2_texture);
-	m_2_sprite.setOrigin(sf::Vector2f(m_2_texture.getSize().x / 2, m_2_texture.getSize().y / 2));
 	m_3_texture.loadFromFile("content/textures/3.png");
-	m_3_sprite.setTexture(m_3_texture);
-	m_3_sprite.setOrigin(sf::Vector2f(m_3_texture.getSize().x / 2, m_3_texture.getSize().y / 2));
 	m_4_texture.loadFromFile("content/textures/4.png");
-	m_4_sprite.setTexture(m_4_texture);
-	m_4_sprite.setOrigin(sf::Vector2f(m_4_texture.getSize().x / 2, m_4_texture.getSize().y / 2));
 	m_5_texture.loadFromFile("content/textures/5.png");
-	m_5_sprite.setTexture(m_5_texture);
-	m_5_sprite.setOrigin(sf::Vector2f(m_5_texture.getSize().x / 2, m_5_texture.getSize().y / 2));
 	m_6_texture.loadFromFile("content/textures/6.png");
-	m_6_sprite.setTexture(m_6_texture);
-	m_6_sprite.setOrigin(sf::Vector2f(m_6_texture.getSize().x / 2, m_6_texture.getSize().y / 2));
 	m_7_texture.loadFromFile("content/textures/7.png");
-	m_7_sprite.setTexture(m_7_texture);
-	m_7_sprite.setOrigin(sf::Vector2f(m_7_texture.getSize().x / 2, m_7_texture.getSize().y / 2));
 	m_8_texture.loadFromFile("content/textures/8.png");
-	m_8_sprite.setTexture(m_8_texture);
-	m_8_sprite.setOrigin(sf::Vector2f(m_8_texture.getSize().x / 2, m_8_texture.getSize().y / 2));
 	m_9_texture.loadFromFile("content/textures/9.png");
-	m_9_sprite.setTexture(m_9_texture);
-	m_9_sprite.setOrigin(sf::Vector2f(m_9_texture.getSize().x / 2, m_9_texture.getSize().y / 2));
+	sprite0.setTexture(m_0_texture);
+	sprite10.setTexture(m_0_texture);
+	sprite100.setTexture(m_0_texture);
+	sf::Vector2f _origin_vector = sf::Vector2f(m_0_texture.getSize().x / 2, m_0_texture.getSize().y / 2);  // This isn't the safest way to do this. It'll require the Textures to all be the same size.
+	sprite0.setOrigin(_origin_vector);
+	sprite10.setOrigin(_origin_vector);
+	sprite100.setOrigin(_origin_vector);
 }
+
 ScoreBoard::~ScoreBoard(){}
 
 void ScoreBoard::SetScore(int _score) {
@@ -55,8 +43,4 @@ void ScoreBoard::SetScore(int _score) {
 	printf("The Score is %i \n", _score);
 }
 
-sf::FloatRect ScoreBoard::GetDimentions() {
-	sf::FloatRect _obj = sf::FloatRect(0.0f, 0.0f, m_0_texture.getSize().x, m_0_texture.getSize().y);
-	return _obj;
-}
 

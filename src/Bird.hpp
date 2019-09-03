@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEZZYBIRD_BIRD_HPP_
+#define TEZZYBIRD_BIRD_HPP_
 
 class Bird{
 	public:
@@ -28,3 +29,5 @@ class Bird{
 		sf::SoundBuffer m_flapping_sound_buffer;
 		sf::Sound m_flapping_sound;
 };
+
+#endif // TEZZYBIRD_BIRD_HPP_

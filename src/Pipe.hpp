@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEZZYBIRD_PIPE_HPP_
+#define TEZZYBIRD_PIPE_HPP_
 
 class Pipe
 {
@@ -20,3 +21,5 @@ class Pipe
 		sf::Vector2f m_positionTop;
 		bool m_passed;
 };
+
+#endif // TEZZYBIRD_PIPE_HPP_

@@ -1,3 +1,6 @@
+#ifndef TEZZYBIRD_GAME_HPP_
+#define TEZZYBIRD_GAME_HPP_
+
 class Bird; // Forward declaring the Bird class for later
 class Pipe;
 class ScoreBoard;
@@ -60,3 +63,5 @@ class Game {
 		GameState gamestate;
 		int score;
 };
+
+#endif // TEZZYBIRD_GAME_HPP_

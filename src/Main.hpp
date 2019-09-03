@@ -1,5 +1,5 @@
-#ifndef MAIN_HPP
-#define MAIN_HPP
+#ifndef TEZZYBIRD_MAIN_HPP_
+#define TEZZYBIRD_MAIN_HPP_
 
 #ifdef __APPLE__
 	#include "MacOS/MacHelper.hpp"
@@ -18,5 +18,5 @@
 
 //
 
-#endif // MAIN_HPP
+#endif // TEZZYBIRD_MAIN_HPP_
 

@@ -16,6 +16,7 @@ Style stuff
   - [x] Make the pipes spawn randomly on the virtical plane
 - [x] Get Sound Going
 - [ ] Animate the Bird
+- [ ] Clean up the bird collision
 - [ ] Score System
   - [ ] Number Generator
 - [x] Game State Manager

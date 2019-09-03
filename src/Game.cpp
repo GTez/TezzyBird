@@ -2,7 +2,7 @@
 #include "Bird.hpp"
 #include "Pipe.hpp"
 #include "ScoreBoard.hpp"
-#include "Globals.hpp"
+#include "Globals.inc"
 
 Game::Game() :  // Colon used for initializing the variable to a null pointer
 	m_bird(nullptr),

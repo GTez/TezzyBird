@@ -1,11 +1,14 @@
-#pragma once
+#ifndef TEZZY_SCOREBOARD_HPP_
+#define TEZZY_SCOREBOARD_HPP_
 
 class ScoreBoard{
 	public:
 		ScoreBoard();
 		~ScoreBoard();
 		void SetScore(int _score);
-		sf::FloatRect GetDimentions();
+		sf::Sprite sprite0;
+		sf::Sprite sprite10;
+		sf::Sprite sprite100;
 
 	private:
 		int m_score;
@@ -19,14 +22,6 @@ class ScoreBoard{
 		sf::Texture m_7_texture;
 		sf::Texture m_8_texture;
 		sf::Texture m_9_texture;
-		sf::Sprite m_0_sprite;
-		sf::Sprite m_1_sprite;
-		sf::Sprite m_2_sprite;
-		sf::Sprite m_3_sprite;
-		sf::Sprite m_4_sprite;
-		sf::Sprite m_5_sprite;
-		sf::Sprite m_6_sprite;
-		sf::Sprite m_7_sprite;
-		sf::Sprite m_8_sprite;
-		sf::Sprite m_9_sprite;
 };
+
+#endif // TEZZY_SCOREBOARD_HPP_

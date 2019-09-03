@@ -1,4 +1,3 @@
-#pragma once
 
 static const float kGravity = 15.0;
 static const float kBirdMass = 70.0f;

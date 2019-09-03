@@ -1,6 +1,8 @@
-#include <vector>
-#include "Globals.hpp"
 #include "Main.hpp"
+
+#include <vector>
+
+#include "Globals.inc"
 #include "Game.hpp"
 
 
