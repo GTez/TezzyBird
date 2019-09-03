@@ -16,7 +16,6 @@ Style stuff
   - [x] Make the pipes spawn randomly on the virtical plane
 - [x] Get Sound Going
 - [x] Animate the Bird
-- [ ] Clean up the bird collision
 - [x] Score System
   - [x] Number Generator
   - [x] Reset back to Zero on Reset
@@ -26,7 +25,8 @@ Style stuff
 - [x] Animated Ground Plane
   - [x] Ground Collision
 - [ ] Make difficulty scale over time (Use a difficulty manager)
-
+- [ ] Stamina Bar
+- [ ] Clean up the bird collision
 
 ### 1.0 - Finished
 - [ ] Add support for multiple birds colours
@@ -34,8 +34,6 @@ Style stuff
 - [ ] Night Mode
 - [ ] Multiple resolution support
 - [ ] High Score System
-- [ ] If the Stamina system remains put a UI Element in place.
-- [ ] Fix bullshit bird hitbox
 
 ### 1.1 - Scope Creep
 - [ ] Port it to Windows
