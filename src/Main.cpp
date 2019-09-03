@@ -1,7 +1,5 @@
 #include "Main.hpp"
-
 #include <vector>
-
 #include "Globals.hpp"
 #include "Game.hpp"
 
@@ -15,15 +13,15 @@ int main()
 	if (m_game != nullptr)
 	{
 		#ifdef SFML_SYSTEM_WINDOWS
-			__windowsHelper.setIcon(window.getSystemHandle());
+			__windowsHelper.setIcon(m_game->GetRenderWindow().getSystemHandle());
 		#endif
 		m_game->spawnPipe();
 		while (m_game->GetRenderWindow()->isOpen())
 		{
 			sf::Time dt = m_clock.restart();
 			m_game->inputHandler();
-			// printf("The current Gamestate is : %i", );
-			if (m_game->GetGameState() == 1) {
+			if (m_game->GetGameState() == 1) // playing
+			{
 				m_game->mainLoopUpdate(dt.asSeconds());
 			}
 			m_game->GetRenderWindow()->clear();

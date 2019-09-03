@@ -24,9 +24,6 @@ ScoreBoard::ScoreBoard() 	{
 ScoreBoard::~ScoreBoard(){}
 
 void ScoreBoard::SetScore(int _score) {
-
-	/// Note to self - Move from a Sprite injection system to a Texture swap on each
-	// digit and instead of figuring out the width figure out the number of sprites to return.
 	m_score = _score;
 	std::vector<int> _temp_array;
 	int n = _score;
@@ -42,7 +39,6 @@ void ScoreBoard::SetScore(int _score) {
 	} else {
 		sprite100.setTexture(getNumberedTexture(0));
 	}
-	// printf("%i", n / 100);
 }
 
 sf::Texture& ScoreBoard::getNumberedTexture(int _number)

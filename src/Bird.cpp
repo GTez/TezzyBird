@@ -1,6 +1,6 @@
 #include "Bird.hpp"
 
- Bird::Bird(const std::string &textureName, sf::Vector2f _position, float _mass, float _gravity, float _stamina, float _regen) :
+ Bird::Bird(sf::Vector2f _position, float _mass, float _gravity, float _stamina, float _regen) :
  	m_mass(_mass),
 	m_velocity(_mass),
 	m_gravity(_gravity),
@@ -9,41 +9,18 @@
 	m_regenRate(_regen)
 	{
 		m_position = _position;
-		m_texture.loadFromFile(textureName.c_str());
-		m_sprite.setTexture(m_texture);
-		m_sprite.setOrigin(m_texture.getSize().x / 2, m_texture.getSize().y /2);
+		m_textureMid.loadFromFile("content/textures/redbird-midflap.png");
+		m_textureDown.loadFromFile("content/textures/redbird-downflap.png");
+		m_textureUp.loadFromFile("content/textures/redbird-upflap.png");
+
+		m_sprite.setTexture(m_textureMid);
+		m_sprite.setOrigin(m_textureMid.getSize().x / 2, m_textureMid.getSize().y /2);
 		m_sprite.setPosition(m_position),
 		m_flapping_sound_buffer.loadFromFile("content/audio/wing.ogg");
 		m_flapping_sound.setBuffer(m_flapping_sound_buffer);
+		m_dt = 0.0f;
 	}
  Bird::~Bird(){}
-
-// void Bird::init(sf::Vector2f position, float maxStamina, float regenRate)
-// {
-// 	/// Jesse move this stuff to the constructor then get rid of the init.
-// 	m_position = position;
-// 	m_mass = mass; 	m_velocity = mass; 	m_gravity = gravity; m_stamina = maxStamina;
-// 	m_maxStamina = maxStamina;
-// 	m_regenRate = regenRate;
-
-// }
-
-
-// this makes a copy of the variable var (pass by value)
-// int function(int var) {
-//	var += 5;
-//	return var;
-// }
-
-// this just uses a reference to var and modifies it directly (pass by reference)
-// void function(int &var)
-// { var += 5 }
-
-// This passes a reference in, and then can use the class without copying it.
-// int function(Bird &birb)
-// { int something = birb.MakeInt() ;
-//  return something; }
-
 
 void Bird::flap(float jumpPower)
 {
@@ -67,6 +44,7 @@ void Bird::flap(float jumpPower)
 
 void Bird::update(float dt)
 {
+	m_dt = dt;
 	m_velocity -= m_mass * m_gravity * dt;
 	m_position.y -= m_velocity * dt;
 	if (m_position.y < 5)
@@ -88,8 +66,23 @@ void Bird::update(float dt)
 }
 
 
-sf::Sprite Bird::getSprite()
+sf::Sprite& Bird::getSprite()
 {
+	// m_dt is the fraction of  a second since the last update
+	// I want 3 updates a second
+	m_matchTime += m_dt;
+	switch ((int)m_matchTime % 3)
+	{
+		case 1 :
+			m_sprite.setTexture(m_textureDown);
+			break;
+		case 0 :
+			m_sprite.setTexture(m_textureUp); // 0
+			break;
+		default :
+			m_sprite.setTexture(m_textureMid);
+
+	};
 	return m_sprite;
 }
 

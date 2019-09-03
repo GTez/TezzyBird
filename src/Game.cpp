@@ -32,7 +32,7 @@ Game::Game() :  // Colon used for initializing the variable to a null pointer
 	messageOverlaySprite.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().x / 2));
 	birdSplatSoundBuffer.loadFromFile(kBirdSplatSoundPath);
 	birdSplatSound.setBuffer(birdSplatSoundBuffer);
-	m_bird = new Bird(kStaticBirdImagePath, sf::Vector2f(kBirdSpawnX, kBirdSpawnY), kBirdMass, kGravity, kStamina, kRegenRate);
+	m_bird = new Bird(sf::Vector2f(kBirdSpawnX, kBirdSpawnY), kBirdMass, kGravity, kStamina, kRegenRate);
 	m_scoreboard = new ScoreBoard();
 	m_scoreboard->sprite0.setPosition(sf::Vector2f(window.getSize().x / 2 + m_scoreboard->sprite0.getLocalBounds().width, kScoreVerticalOffset));
 	m_scoreboard->sprite10.setPosition(sf::Vector2f(window.getSize().x / 2, kScoreVerticalOffset));
@@ -69,7 +69,7 @@ void Game::draw() {
 	}
 	if (gamestate == starting) {
 		window.draw(messageOverlaySprite);
-	} else {
+	} else if (gamestate == playing || gamestate == gameover) {
 		window.draw(m_bird->getSprite());
 		window.draw(m_scoreboard->sprite0);
 		window.draw(m_scoreboard->sprite10);
@@ -112,9 +112,8 @@ void Game::mainLoopUpdate(float dt) {
 			// Update the score
 			if (pipe->getPosition().x < _bird_x_pos && pipe->GetPassed() == false) {
 				pipe->SetPassed(true);
-				score += 17;
+				score += kScoreIncrements;
 				m_scoreboard->SetScore(score);
-				// printf("The Game Score is: %i \n", score);
 			}
 			// Move the pipe
 			pipe->update(dt, kScrollRate);
@@ -126,7 +125,6 @@ void Game::mainLoopUpdate(float dt) {
 			}
 			// Clean up Old Pipes
 			if (pipe->getPosition().x < (0 - pipe->getSprite().getTextureRect().width)) {
-				// printf("Cleaning up pipe - Total pipes: %lu \n", pipes.size());
 				pipes.erase(pipes.begin() + i);
 				delete(pipe);
 			}
@@ -137,10 +135,8 @@ void Game::mainLoopUpdate(float dt) {
 }
 
 void Game::spawnPipe() {
-	// printf("Spawning a Pipe \n");
 	// 550.0f bottom 360.0f top
 	float offset = rand() % 190 + 360;
-	// printf("Spawning Pipe with offset: %F", offset);
 	sf::Vector2f pipeSpawnPos = sf::Vector2f(window.getSize().x + 25, offset);
 	const float _spread = 0.0f - ( kPipeOpening + 320.0f ); // 320 is the magic offset for the image
 	Pipe* pipe = new Pipe(kPipeImagePath, pipeSpawnPos, _spread);
@@ -157,10 +153,7 @@ bool Game::checkCollision(sf::Sprite objOne, sf::Sprite objTwo) {
 }
 
 void Game::resetGame() {
-	if (m_bird != nullptr)
-	{
-		m_bird->reset(sf::Vector2f(kBirdSpawnX, kBirdSpawnY));
-	}
+	if (m_bird != nullptr) m_bird->reset(sf::Vector2f(kBirdSpawnX, kBirdSpawnY));
 	for ( Pipe *pipe : pipes )
 	{ // First delete the pipes
 		delete(pipe);
@@ -168,8 +161,6 @@ void Game::resetGame() {
 	pipes.clear();  // Then clear the Vector
 	secSinceLastSpawn = 0.0f;
 	spawnPipe();
-	// groundSpriteOne.setPosition(sf::Vector2f(144.0f, kGroundHeight));
-	// groundSpriteTwo.setPosition(sf::Vector2f(144.0f + groundTexture.getSize().x, kGroundHeight)); // Offset from the original
 	score = 0;
 	if (m_scoreboard != nullptr) m_scoreboard->SetScore(score);
 }
@@ -188,7 +179,6 @@ void Game::MoveGround(float dt, float distance)
 	} else {
 		groundSpriteTwo.move(_translate);
 	}
-	// printf("Groud Plane X Loc: %f \n", groundSpriteOne.getPosition().x);
 }
 
 int Game::GetGameState()
@@ -196,6 +186,7 @@ int Game::GetGameState()
 	return gamestate;
 }
 
-sf::RenderWindow* Game::GetRenderWindow() {
+sf::RenderWindow* Game::GetRenderWindow()
+{
 	return &window;
 }
